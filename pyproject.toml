@@ -16,6 +16,7 @@ dependencies = [
     "langchain-core>=1.4.8",
     "langchain-google-genai>=4.2.5",
     "langchain-groq",
+    "langchain-huggingface",
     "langgraph>=1.2.6",
     "mistralai>=1.12.4",
     "numpy>=2.4.6",

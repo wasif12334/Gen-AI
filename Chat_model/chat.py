@@ -22,9 +22,18 @@ load_dotenv()
 
 
 # now using the groq oi/model
+# from langchain_groq import ChatGroq
+
+# model=ChatGroq(model="qwen/qwen3-32b")
+
+# response=model.invoke("who has the highest basket player in respoect to hieght")
+
+
+# print(response.content)
+# Now using the mistrial
 from langchain_groq import ChatGroq
 
-model=ChatGroq(model="qwen/qwen3-32b")
+model=ChatGroq(model="qwen/qwen3-32b",temperature=0,max_tokens=200)
 
 response=model.invoke("who has the highest basket player in respoect to hieght")
 
