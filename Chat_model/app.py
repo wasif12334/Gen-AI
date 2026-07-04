@@ -10,7 +10,7 @@ model = ChatMistralAI(
     temperature=0.7
 )
 
-st.title("Choose your AI Mode")
+st.title("MOOD BASED AI AGENTS")
 
 choice = st.radio(
     "Tell your response :-",

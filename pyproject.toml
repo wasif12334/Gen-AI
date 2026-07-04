@@ -36,3 +36,8 @@ dependencies = [
 dev = [
     "langchain>=1.3.11",
 ]
+
+[tool.uv.workspace]
+members = [
+    "Video Analzer",
+]
