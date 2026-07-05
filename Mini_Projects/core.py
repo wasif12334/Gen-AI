@@ -1,12 +1,15 @@
 from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_mistralai import ChatMistralAI
+f
 load_dotenv()
-
+#model instailized
 model= ChatMistralAI(
         model="mistral-small-2506"
         )
 
+
+#this is the alternative of humman,ai,system message used in pervoius case with better approach here we can define the role of model to be act as who?
 promt=ChatPromptTemplate.from_messages(
     [
 
