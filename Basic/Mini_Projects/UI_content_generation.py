@@ -1,6 +1,6 @@
 import streamlit as st
 
-from Content_genreator import (
+from Basic.Mini_Projects.Content_genreator import (
     model,
     prompt,
     parser,
