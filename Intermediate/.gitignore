@@ -1,0 +1,4 @@
+.env
+*.env
+.env_old
+*.env_oldgit ls-files | findstr .env
