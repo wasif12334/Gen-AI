@@ -3,7 +3,7 @@ from langchain_text_splitters import CharacterTextSplitter
 splitter=CharacterTextSplitter(
 chunk_size=100,
 chunk_overlap=10,
-separator=""
+
 )
 data=TextLoader(".\RAG/textSplitter/test.txt")
 docs=data.load()

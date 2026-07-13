@@ -1,11 +1,11 @@
-from langchain_community.document_loaders import TextLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import TokenTextSplitter
 
-text_splittter=TokenTextSplitter(
-    chunk_size=100,
-    chunk_overlap=10
+splittter=TokenTextSplitter(
+   chunk_size=100, chunk_overlap=10
 )
 
-data=TextLoader(".\RAG/textSplitter/test.txt")
-chunks=text_splittter.split_documents(data)
+data=PyPDFLoader(".\RAG/Doumenr_loader/Business_and_Finance.pdf")
+docs=data.load()
+chunks=splittter.split_documents(docs)
 print(chunks)

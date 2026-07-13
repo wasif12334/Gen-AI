@@ -12,4 +12,6 @@ dependencies = [
     "langchain-docling>=2.0.0",
     "langchain-google-genai>=4.2.6",
     "langchain-mistralai>=1.1.5",
+    "pypdf>=6.14.2",
+    "tiktoken>=0.13.0",
 ]
