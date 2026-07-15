@@ -19,7 +19,7 @@ vectorstore=Chroma(
 #retriver that retrive the information from the vectorestore using mmr search algo 
 retriver=vectorstore.as_retriever(
     search_type="mmr",
-    seacrh_kwargs={
+    search_kwargs={
        
         "k":4,
         "fetch-k":10,
@@ -29,8 +29,8 @@ retriver=vectorstore.as_retriever(
 )
 
 #llm instaization
-llm=ChatGoogleGenerativeAI(
-       model="gemini-2.5-flash"
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash-lite"
 )
 #prompt template
 
