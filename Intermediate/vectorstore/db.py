@@ -29,7 +29,9 @@ vectorstore=Chroma.from_documents(
     embedding=embedding_model,
     persist_directory="chroma-db"
 )
+#they are not runiable and we can't oinvoke them
 result=vectorstore.similarity_search("What is used from  agentic ai ")
+# this is used beasuce they can runaible and we can invoke that and they have multiple searching technique
 resteriver=vectorstore.as_retriever()
 docs=resteriver.invoke(
 "explain the agentic ai "

@@ -1,58 +1,83 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 load_dotenv()
-#MODEL INTILIAZATION
-model=ChatGoogleGenerativeAI(
 
-    model="gemini-3.5-flash",
-    temperature=0.5
+#embdeing model
+embeding_model=HuggingFaceEmbeddings(
+      model_name="sentence-transformers/all-MiniLM-L6-v2"
 )
-#PDF LOADER
-book=PyPDFLoader('./assets/deeplearnignbook.pdf').load()
-#SPLITTING THE PDF 
-splitter=RecursiveCharacterTextSplitter(
-    chunk_size=1000, chunk_overlap=200
-)
-#IN THIS HTERE ARE DEVIDED IN CHHUNKNG
-chunk=splitter.split_documents(book)
 
-#PROMPT TEMPLATE FOR MODEL
+#vectore store loaded 
+vectorstore=Chroma(
+    persist_directory="chroma-db",
+    embedding_function=embeding_model
+)
+#retriver that retrive the information from the vectorestore using mmr search algo 
+retriver=vectorstore.as_retriever(
+    search_type="mmr",
+    seacrh_kwargs={
+       
+        "k":4,
+        "fetch-k":10,
+        "lambda_mult":0.5
+        
+        }
+)
+
+#llm instaization
+llm=ChatGoogleGenerativeAI(
+       model="gemini-2.5-flash"
+)
+#prompt template
+
 template=ChatPromptTemplate.from_messages(
     [
-        ('system',"""ou are an expert AI text summarization assistant.
+        (
+            "system",
+            """
+You are a helpful AI assistant that answers questions using the provided context.
 
-Your task is to read the user's input and produce a clear, accurate, and concise summary while preserving the original meaning and key information.
+Instructions:
+1. Use only the information available in the retrieved context.
+2. If the answer is not present in the context, say:
+   "I could not find enough information in the provided documents."
+3. Do not make up facts or use external knowledge.
+4. Provide clear, concise, and accurate answers.
+5. When appropriate, summarize information from multiple retrieved documents.
+6. If the context contains conflicting information, mention the conflict and explain it.
+7. Answer in a professional and easy-to-understand manner.
 
-Guidelines:
-- Identify the main ideas, important facts, and essential details.
-- Remove repetition, filler words, and unnecessary information.
-- Do not introduce new information, opinions, or assumptions.
-- Maintain a neutral and objective tone.
-- Keep names, numbers, dates, and technical terms whenever they are important.
-- If the input contains multiple topics, organize the summary into logical sections or bullet points.
-- Preserve the chronological order when it is important for understanding.
-- If the text is already concise, provide a brief refined version instead of shortening it excessively.
-- If the input is ambiguous or incomplete, summarize only the information that is explicitly provided.
-- Return only the summary unless the user explicitly requests additional analysis or explanation.
+     Context:{context}
+"""
+        ),
 
-Goal:
-Create a summary that can be understood in less than one-third of the time required to read the original text, while retaining all critical information."""),
-        ('human',"""
-{data}
-         """)
+    ("human","""
+     Query:{question}
+
+""")
     ]
 )
-#LENGTH OF THE BOOK
-print(len(book))
-print("--------------------------------------------")
-print("--------------------------------------------")
-print("--------------------------------------------")
-print("--------------------------------------------")
-print("--------------------------------------------")
-# FUNAL PROMPT
-finalPrompt=template.format_messages(data=chunk)
-repsonse=model.invoke(finalPrompt)
-print(repsonse.content)
+
+print("-----------------RAG BASED APP------------------------")
+print("Press 0 to EXIT")
+while True:
+    query=input("YOU :")
+    if query==0:
+        break
+    docs=retriver.invoke(query)
+
+    context="\n\n".join(
+        doc.page_content for doc in docs
+    )
+    prommpt = template.format_messages(
+     context=context,
+        question=query
+    )
+    response=llm.invoke(prommpt)
+    print("\n")
+    print("AI RESPONSE :")
+    print(response.content)
