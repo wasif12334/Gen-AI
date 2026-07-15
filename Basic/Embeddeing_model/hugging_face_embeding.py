@@ -8,4 +8,4 @@ documents = [
     "PAF-IAST (Pak-Austria Fachhochschule Institute of Applied Sciences and Technology). Overview: PAF-IAST is a public sector degree-awarding institute located in Haripur, Khyber Pakhtunkhwa, Pakistan..."
 ] 
 vector=embeddings.embed_documents(documents)
-print(vector)
+print(len(vector))
