@@ -1,0 +1,16 @@
+[project]
+name = "lec-3"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain>=1.3.14",
+    "langchain-classic>=1.0.8",
+    "langchain-community>=0.4.2",
+    "langchain-core>=1.4.9",
+    "langchain-mistralai>=1.1.6",
+    "mistralai>=2.7.0",
+    "pypdf>=6.14.2",
+    "python-dotenv>=1.2.2",
+]
